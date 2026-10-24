@@ -1,0 +1,75 @@
+<!doctype html>
+<html>
+<head>
+<meta charset="utf-8">
+<title>Roomba</title>
+<style>
+  :root { color-scheme: light dark; font: 13px system-ui, sans-serif; }
+  body { margin: 0; overflow: hidden; display: grid; grid-template-rows: auto 1fr; height: 100vh; }
+  header { display: flex; flex-wrap: wrap; gap: 12px; align-items: center; padding: 8px 12px; border-bottom: 1px solid #8884; }
+  .stat b { font-variant-numeric: tabular-nums; }
+  .buttons { display: flex; gap: 4px; margin-left: auto; }
+  button { font: inherit; padding: 4px 10px; }
+  main { display: grid; grid-template-columns: minmax(0, 1fr) 420px; min-height: 0; min-width: 0; }
+  #logpane { display: flex; flex-direction: column; min-height: 0; border-right: 1px solid #8884; }
+  #filters { display: flex; flex-wrap: wrap; gap: 10px; align-items: center; padding: 6px 12px; border-bottom: 1px solid #8884; }
+  #log { overflow: auto; font: 12px ui-monospace, monospace; flex: 1; }
+  .row { padding: 2px 12px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; cursor: pointer; border-bottom: 1px solid #8881; }
+  .row.open { white-space: pre-wrap; overflow-wrap: anywhere; }
+  .row .time { opacity: .6; }
+  .in .dir { color: #2a8; } .out .dir { color: #d70; } .info { opacity: .7; font-style: italic; }
+  .topic { font-weight: bold; }
+  #side { display: flex; flex-direction: column; min-height: 0; }
+  #map { width: 100%; aspect-ratio: 1; display: block; }
+  #sideinfo { padding: 6px 12px; }
+  #publish { display: flex; flex-direction: column; gap: 4px; padding: 6px 12px; border-top: 1px solid #8884; }
+  #publish textarea { font: 12px ui-monospace, monospace; height: 60px; }
+</style>
+</head>
+<body>
+<header>
+  <span class="stat">WS: <b id="ws">…</b></span>
+  <span class="stat">Robot: <b id="robot">…</b></span>
+  <span class="stat">Phase: <b id="phase">?</b></span>
+  <span class="stat">Battery: <b id="bat">?</b></span>
+  <span class="stat">Bin: <b id="bin">?</b></span>
+  <span class="stat">Mission: <b id="mission">?</b></span>
+  <div class="buttons">
+    <button data-cmd="start">Clean</button>
+    <button data-cmd="pause">Pause</button>
+    <button data-cmd="resume">Resume</button>
+    <button data-cmd="stop">Stop</button>
+    <button data-cmd="dock">Home</button>
+    <button data-cmd="evac">Empty bin</button>
+    <button data-cmd="find">Find</button>
+    <button id="profiler">Open in Firefox Profiler</button>
+  </div>
+</header>
+<main>
+  <div id="logpane">
+    <div id="filters">
+      <input id="filter" placeholder="filter (text)" size="24">
+      <label><input type="checkbox" id="hidepos"> hide position req/data</label>
+      <label><input type="checkbox" id="follow" checked> auto-scroll</label>
+      <label>poll position every
+        <select id="poll">
+          <option value="0">off</option><option value="500">0.5 s</option>
+          <option value="1000">1 s</option><option value="2000">2 s</option><option value="5000">5 s</option>
+        </select></label>
+      <button id="clearlog">Clear</button>
+    </div>
+    <div id="log"></div>
+  </div>
+  <div id="side">
+    <canvas id="map" width="840" height="840"></canvas>
+    <div id="sideinfo">Position: <b id="pos">none yet</b> <button id="clearmap">Clear path</button></div>
+    <div id="publish">
+      <div>Raw publish — topic: <input id="ptopic" value="cmd" size="10"></div>
+      <textarea id="ppayload">{"command":"find","time":0,"initiator":"localApp"}</textarea>
+      <button id="psend">Send</button>
+    </div>
+  </div>
+</main>
+<script src="app.js"></script>
+</body>
+</html>

@@ -1,0 +1,16 @@
+{
+  "name": "roomba-profiler",
+  "version": "1.0.0",
+  "description": "Live view, control and Firefox Profiler export of a Roomba's local MQTT traffic",
+  "main": "server.js",
+  "scripts": {
+    "start": "node server.js"
+  },
+  "keywords": [],
+  "author": "",
+  "type": "commonjs",
+  "dependencies": {
+    "mqtt": "^5.16.1",
+    "ws": "^8.22.0"
+  }
+}
