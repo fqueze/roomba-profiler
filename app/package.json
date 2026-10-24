@@ -12,5 +12,6 @@
   "dependencies": {
     "mqtt": "^5.16.1",
     "ws": "^8.22.0"
-  }
+  },
+  "license": "MPL-2.0"
 }
